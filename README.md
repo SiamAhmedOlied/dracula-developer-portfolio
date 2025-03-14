@@ -63,7 +63,7 @@ Check out the live demo: [Dracula Developer Portfolio](https://siamahmedolied.ve
 
 4. Start the development server:
    ```bash
-npm run dev
+    npm run dev
    # or
    yarn dev
    ```
