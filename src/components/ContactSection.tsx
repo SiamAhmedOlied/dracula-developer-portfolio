@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail, Key, Send } from 'lucide-react';
 import { socialLinks } from '@/lib/data';
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { submitContactForm } from '@/lib/api';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -12,27 +13,95 @@ const ContactSection = () => {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
+
+  const validateForm = () => {
+    const newErrors: {
+      name?: string;
+      email?: string;
+      message?: string;
+    } = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!formData.email.includes('@')) {
+      newErrors.email = 'Please enter a valid email';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field when user types
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm()) {
+      toast({
+        title: "Form validation failed",
+        description: "Please check the form for errors.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission (will be replaced with Supabase later)
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormData({ name: '', email: '', message: '' });
+    try {
+      // Submit to our API service
+      const response = await submitContactForm(formData);
       
+      if (response.success) {
+        // Reset form on success
+        setFormData({ name: '', email: '', message: '' });
+        
+        toast({
+          title: "Message sent!",
+          description: "Thanks for reaching out. I'll get back to you soon.",
+          variant: "default",
+        });
+      } else {
+        // Display error message
+        toast({
+          title: "Failed to send message",
+          description: response.error || "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
       toast({
-        title: "Message sent!",
-        description: "Thanks for reaching out. I'll get back to you soon.",
-        variant: "default",
+        title: "An error occurred",
+        description: "Unable to send your message. Please try again later.",
+        variant: "destructive",
       });
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -131,9 +200,12 @@ const ContactSection = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-dracula-currentLine/50 border border-dracula-currentLine rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50"
+                    className={`w-full px-4 py-3 bg-dracula-currentLine/50 border ${errors.name ? 'border-dracula-red' : 'border-dracula-currentLine'} rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50`}
                     placeholder="Your name"
                   />
+                  {errors.name && (
+                    <p className="text-sm text-dracula-red mt-1">{errors.name}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -147,9 +219,12 @@ const ContactSection = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-dracula-currentLine/50 border border-dracula-currentLine rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50"
+                    className={`w-full px-4 py-3 bg-dracula-currentLine/50 border ${errors.email ? 'border-dracula-red' : 'border-dracula-currentLine'} rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50`}
                     placeholder="your.email@example.com"
                   />
+                  {errors.email && (
+                    <p className="text-sm text-dracula-red mt-1">{errors.email}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -163,9 +238,12 @@ const ContactSection = () => {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 bg-dracula-currentLine/50 border border-dracula-currentLine rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50 resize-none"
+                    className={`w-full px-4 py-3 bg-dracula-currentLine/50 border ${errors.message ? 'border-dracula-red' : 'border-dracula-currentLine'} rounded-md focus:outline-none focus:ring-2 focus:ring-dracula-cyan/50 focus:border-transparent text-dracula-foreground placeholder-dracula-foreground/50 resize-none`}
                     placeholder="Your message..."
                   ></textarea>
+                  {errors.message && (
+                    <p className="text-sm text-dracula-red mt-1">{errors.message}</p>
+                  )}
                 </div>
                 
                 <Button 
