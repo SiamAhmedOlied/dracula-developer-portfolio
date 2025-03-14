@@ -1,6 +1,5 @@
-
 import React, { useEffect, useRef } from 'react';
-import { GitHub, Linkedin, FileText, Terminal } from 'lucide-react';
+import { Github, Linkedin, FileText, Terminal } from 'lucide-react';
 import { socialLinks } from '@/lib/data';
 
 const HeroSection = () => {
@@ -80,7 +79,7 @@ const HeroSection = () => {
               className="p-3 rounded-full bg-dracula-currentLine/50 hover:bg-dracula-currentLine transition-colors text-dracula-foreground hover:text-dracula-cyan"
               aria-label="GitHub"
             >
-              <GitHub size={20} />
+              <Github size={20} />
             </a>
             <a 
               href={socialLinks.linkedin} 

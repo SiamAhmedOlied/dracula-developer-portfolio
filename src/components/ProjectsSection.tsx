@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { projects } from '@/lib/data';
-import { ExternalLink, GitHub, Star } from 'lucide-react';
+import { ExternalLink, Github, Star } from 'lucide-react';
 
 const ProjectsSection = () => {
   return (
@@ -60,7 +59,7 @@ const ProjectsSection = () => {
                       className="p-2 text-dracula-foreground hover:text-dracula-green transition-colors"
                       aria-label={`GitHub repository for ${project.title}`}
                     >
-                      <GitHub size={18} />
+                      <Github size={18} />
                     </a>
                   )}
                   

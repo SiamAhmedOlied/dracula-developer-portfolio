@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { GitHub, Linkedin, Mail, Key, Send } from 'lucide-react';
+import { Github, Linkedin, Mail, Key, Send } from 'lucide-react';
 import { socialLinks } from '@/lib/data';
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
