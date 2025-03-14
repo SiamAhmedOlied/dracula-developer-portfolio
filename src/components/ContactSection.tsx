@@ -71,7 +71,7 @@ const ContactSection = () => {
                   className="flex items-center text-dracula-foreground hover:text-dracula-cyan transition-colors"
                 >
                   <div className="w-12 h-12 rounded-full bg-dracula-currentLine flex items-center justify-center mr-4">
-                    <GitHub size={20} />
+                    <Github size={20} />
                   </div>
                   <div>
                     <div className="text-sm text-dracula-foreground/70">GitHub</div>
