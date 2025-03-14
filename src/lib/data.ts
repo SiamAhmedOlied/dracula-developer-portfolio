@@ -1,4 +1,3 @@
-
 import { Project, Education, Certificate, Tool, Skill } from "./types";
 import { 
   Code2, 
@@ -18,35 +17,35 @@ import {
 export const projects: Project[] = [
   {
     id: 1,
-    title: "JustEat Clone",
-    description: "Replicated Just Eat's homepage and restaurant listings with Agile team coordination.",
-    technologies: ["HTML", "CSS", "Trello", "GitHub"],
-    featured: true,
-    githubUrl: "https://github.com/username/justeat-clone",
+    title: "Zoom Clone",
+    description: "Replicated Zoom with React, Next.js, Tailwind CSS, and StreamAPI",
+    technologies: ["React", "Next.js", "Tailwind CSS", "StreamAPI"],
+    featured: false,
+    githubUrl: "https://github.com/SiamAhmedOlied/Zoom_Clone",
   },
   {
     id: 2,
-    title: "RTFKT Clone",
-    description: "Led a team to recreate RTFKT's digital fashion platform with modern web technologies.",
-    technologies: ["React", "TypeScript", "Tailwind CSS"],
-    role: "Team Lead",
-    featured: true,
-    githubUrl: "https://github.com/username/rtfkt-clone",
+    title: "Crevo - Figma Clone",
+    description: "Replicated Figma with React, Next.js, Tailwind CSS and Framer Motion",
+    technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    featured: false,
+    githubUrl: "https://github.com/SiamAhmedOlied/Crevo",
   },
   {
     id: 3,
-    title: "Alpha-Spy Discord Bot",
-    description: "A Discord bot featuring cross-server message synchronization and advanced user analytics.",
-    technologies: ["Python", "Discord.py", "MongoDB"],
-    featured: true,
-    githubUrl: "https://github.com/username/alpha-spy-bot",
+    title: "Grayanotoxin HoneyTrap",
+    description: "A Honeytrap made using Python, NextJs, TailwindCSS to trap attackers and get their details and System Access",
+    technologies: ["Python", "NextJs", "TailwindCSS"],
+    featured: false,
+    githubUrl: "https://github.com/SiamAhmedOlied/Grayanotoxin-HoneyTrap",
   },
   {
     id: 4,
-    title: "Secure Authentication System",
-    description: "Implemented a secure multi-factor authentication system with biometric verification.",
-    technologies: ["Node.js", "Express", "JWT", "Biometrics API"],
-    githubUrl: "https://github.com/username/secure-auth",
+    title: "Steg-Daddy",
+    description: "A powerful tool to hide and extract data from images using steganography",
+    technologies: ["Python", "Tkinter", "Pillow"],
+    featured: true,
+    githubUrl: "https://github.com/SiamAhmedOlied/Steg-Daddy",
   },
   {
     id: 5,
@@ -55,33 +54,26 @@ export const projects: Project[] = [
     technologies: ["Python", "Docker", "REST API"],
     githubUrl: "https://github.com/username/vuln-scanner",
   },
-  {
-    id: 6,
-    title: "Encrypted Messaging App",
-    description: "End-to-end encrypted messaging application with self-destructing messages.",
-    technologies: ["React Native", "Firebase", "Signal Protocol"],
-    githubUrl: "https://github.com/username/encrypted-messenger",
-  },
-];
+].sort((a, b) => a.title.localeCompare(b.title));
 
 export const education: Education[] = [
   {
     id: 1,
-    degree: "Bachelor of Science in Computer Science",
-    institution: "University of Technology",
-    location: "London, UK",
-    startDate: "2016",
-    endDate: "2020",
-    description: "Specialized in Cybersecurity and Software Engineering."
+    degree: "Ethical Hacking & Cybersecurity",
+    institution: "Creative IT Institute",
+    location: "Dhaka, Bangladesh",
+    startDate: "2023",
+    endDate: "2024",
+    description: "Specialized in Cybersecurity and Penetration Testing."
   },
   {
     id: 2,
-    degree: "Diploma in Ethical Hacking",
-    institution: "Cybersecurity Institute",
+    degree: "Malware Analysis & Malware Development",
+    institution: "Udemy",
     location: "Online",
-    startDate: "2020",
-    endDate: "2021",
-    description: "Advanced penetration testing and vulnerability assessment."
+    startDate: "2024",
+    endDate: "2025",
+    description: "Advanced Malware Analysis and Development."
   }
 ];
 
@@ -200,13 +192,13 @@ export const skills: Skill[] = [
   },
   {
     id: 2,
-    name: "JavaScript",
+    name: "Rust",
     category: "language",
     level: "expert"
   },
   {
     id: 3,
-    name: "Bash",
+    name: "Golang",
     category: "language",
     level: "advanced"
   },
@@ -233,20 +225,14 @@ export const skills: Skill[] = [
     name: "Network Security",
     category: "tool",
     level: "expert"
-  },
-  {
-    id: 8,
-    name: "Problem Solving",
-    category: "soft",
-    level: "expert"
   }
 ];
 
 export const socialLinks = {
-  github: "https://github.com/username",
-  linkedin: "https://linkedin.com/in/username",
-  email: "siam@example.com",
-  pgpKey: "https://keybase.io/username"
+  github: "https://github.com/SiamAhmedOlied",
+  linkedin: "https://www.linkedin.com/in/programmersiamolied/",
+  email: "imananonymusentity@proton.me",
+  pgpKey: "https://keybase.io/crypto"
 };
 
 export const getToolIcon = (iconName: string) => {

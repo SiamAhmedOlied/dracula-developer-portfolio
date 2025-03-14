@@ -1,69 +1,182 @@
-# Welcome to your Lovable project
+# 🧛‍♂️ Dracula Developer Portfolio
 
-## Project info
+<div align="center">
+  <img src="https://socialify.git.ci/SiamAhmedOlied/dracula-developer-portfolio/image?font=Source+Code+Pro&language=1&name=1&owner=1&pattern=Diagonal+Stripes&stargazers=1&theme=Dark" alt="Dracula Portfolio Banner" width="800px" />
+  <p><em>A sleek, dark-themed developer portfolio with the iconic Dracula color scheme</em></p>
+</div>
 
-**URL**: https://lovable.dev/projects/7782ab35-58e4-43be-8ec0-118a45c42a55
+## ✨ Features
 
-## How can I edit this code?
+- 🎨 **Dracula Theme** - Beautiful dark theme based on the popular Dracula color palette
+- 🚀 **Modern Stack** - Built with React, TypeScript, Tailwind CSS, and Framer Motion
+- 📱 **Responsive Design** - Looks great on all devices, from mobile to desktop
+- 🔥 **Animations** - Smooth animations and transitions powered by Framer Motion
+- 🔍 **SEO Optimized** - Meta tags and structured data for better search engine visibility
+- 📊 **Supabase Integration** - Contact form with Supabase backend (with localStorage fallback)
+- 🌙 **Accessibility** - Designed with accessibility in mind
+- 🛠️ **Customizable** - Easy to customize and make your own
 
-There are several ways of editing your application.
+## 🚀 Live Demo
 
-**Use Lovable**
+Check out the live demo: [Dracula Developer Portfolio](https://siamahmedolied.vercel.app)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7782ab35-58e4-43be-8ec0-118a45c42a55) and start prompting.
+## 🛠️ Technologies Used
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend Framework**: React with TypeScript
+- **Styling**: Tailwind CSS with custom Dracula theme
+- **Animations**: Framer Motion
+- **Backend**: Supabase
+- **Build Tool**: Vite
+- **UI Components**: Shadcn UI
+- **Form Handling**: React Hook Form
+- **Data Fetching**: TanStack Query
+- **Routing**: React Router
 
-**Use your preferred IDE**
+## 📋 Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js (v16 or higher)
+- npm or yarn
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/siamahmedolied/dracula-developer-portfolio.git
+   cd dracula-developer-portfolio
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Set up environment variables:
+   Create a `.env` file in the root directory with your Supabase credentials:
+   ```
+   VITE_SUPABASE_URL=your-supabase-url
+   VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Start the development server:
+   ```bash
 npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:8080](http://localhost:8080) in your browser.
+
+## 🗂️ Project Structure
+
+```
+dracula-developer-portfolio/
+├── public/                  # Static assets
+│   ├── components/          # React components
+│   │   ├── ui/              # UI components (buttons, cards, etc.)
+│   │   └── ...              # Feature components
+│   ├── hooks/               # Custom React hooks
+│   ├── integrations/        # Third-party integrations
+│   │   └── supabase/        # Supabase client and types
+│   ├── lib/                 # Utility functions and data
+│   ├── pages/               # Page components
+│   ├── App.tsx              # Main App component
+│   ├── index.css            # Global styles
+│   └── main.tsx             # Entry point
+├── tailwind.config.ts       # Tailwind CSS configuration
+├── tsconfig.json            # TypeScript configuration
+└── vite.config.ts           # Vite configuration
 ```
 
-**Edit a file directly in GitHub**
+## 🎨 Customization
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Changing Content
 
-**Use GitHub Codespaces**
+Edit the data files in `src/lib/data.ts` to update your personal information, projects, skills, and more.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Modifying the Theme
 
-## What technologies are used for this project?
+The Dracula theme colors are defined in `tailwind.config.ts`. You can modify these colors to match your preferences.
 
-This project is built with .
+### Adding New Sections
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Create a new component in the `src/components` directory
+2. Import and add the component to the appropriate page in `src/pages`
 
-## How can I deploy this project?
+## 📝 Contact Form Setup
 
-Simply open [Lovable](https://lovable.dev/projects/7782ab35-58e4-43be-8ec0-118a45c42a55) and click on Share -> Publish.
+The contact form uses Supabase as a backend. To set it up:
 
-## I want to use a custom domain - is that possible?
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Run the following SQL in the Supabase SQL Editor:
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+```sql
+-- Create the contact_messages table
+CREATE TABLE IF NOT EXISTS public.contact_messages (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  email text NOT NULL,
+  message text NOT NULL,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable Row Level Security
+ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+
+-- Create policy to allow anonymous users to insert messages
+CREATE POLICY "Allow anonymous users to insert messages"
+ON public.contact_messages
+FOR INSERT
+TO anon
+WITH CHECK (true);
+
+-- Create policy to allow authenticated users to view messages
+CREATE POLICY "Allow authenticated users to view messages"
+ON public.contact_messages
+FOR SELECT
+TO authenticated
+USING (true);
+```
+
+3. Update your environment variables with your Supabase URL and anon key
+
+## 🌐 Deployment
+
+### Vercel
+
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Set the environment variables
+4. Deploy!
+
+### Netlify
+
+1. Push your code to GitHub
+2. Import your repository in Netlify
+3. Set the environment variables
+4. Deploy!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgements
+
+- [Dracula Theme](https://draculatheme.com/) for the color palette inspiration
+- [Shadcn UI](https://ui.shadcn.com/) for the beautiful UI components
+- [Lucide Icons](https://lucide.dev/) for the icons
+- [Framer Motion](https://www.framer.com/motion/) for the animations
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by Siam Ahmed Olied</p>
+  <p>
+    <a href="https://github.com/yourusername">GitHub</a> •
+    <a href="https://linkedin.com/in/yourusername">LinkedIn</a> •
+    <a href="https://twitter.com/yourusername">Twitter</a>
+  </p>
+</div>

@@ -12,7 +12,7 @@ const HeroSection = () => {
       const lines = [
         '$ whoami --security',
         'Siam Ahmed Olied',
-        'Developer & Security Specialist',
+        'Frontend Developer & Cybersecurity Professional',
         '',
         '$ cat about.txt',
         'Building secure systems with precision.',
@@ -33,7 +33,7 @@ const HeroSection = () => {
           p.className = 'text-dracula-green';
         } else if (line === 'Siam Ahmed Olied') {
           p.className = 'text-dracula-purple font-bold';
-        } else if (line === 'Developer & Security Specialist') {
+        } else if (line === 'Frontend Developer & Cybersecurity Professional') {
           p.className = 'text-dracula-pink italic';
         } else if (line.startsWith('python') || line.startsWith('ls')) {
           p.className = 'text-dracula-yellow';
@@ -136,7 +136,7 @@ const HeroSection = () => {
       </div>
       
       {/* Decorative elements */}
-      <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-dracula-green/5 rounded-full blur-3xl"></div>
+      {/* <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-dracula-green/5 rounded-full blur-3xl"></div> */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-dracula-purple/5 rounded-full blur-3xl"></div>
     </section>
   );

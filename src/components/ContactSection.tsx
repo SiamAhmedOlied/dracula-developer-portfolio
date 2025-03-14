@@ -144,7 +144,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <div className="text-sm text-dracula-foreground/70">GitHub</div>
-                    <div className="font-medium">github.com/username</div>
+                    <div className="font-medium">github.com/SiamAhmedOlied</div>
                   </div>
                 </a>
                 
@@ -159,7 +159,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <div className="text-sm text-dracula-foreground/70">LinkedIn</div>
-                    <div className="font-medium">linkedin.com/in/username</div>
+                    <div className="font-medium">linkedin.com/in/programmersiamolied/</div>
                   </div>
                 </a>
                 

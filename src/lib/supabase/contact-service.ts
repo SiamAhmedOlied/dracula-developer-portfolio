@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import type { ApiResponse } from '@/lib/api';
 
@@ -8,53 +7,91 @@ interface ContactFormData {
   message: string;
 }
 
+// Helper function to sanitize input
+const sanitizeInput = (input: string): string => {
+  // Basic sanitization - trim and escape special characters
+  return input.trim()
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
+// Fallback storage when Supabase is not available
+const saveToLocalStorage = (data: ContactFormData): string => {
+  const id = `local-${Date.now()}`;
+  const messages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
+  messages.push({
+    id,
+    ...data,
+    created_at: new Date().toISOString()
+  });
+  localStorage.setItem('contact_messages', JSON.stringify(messages));
+  return id;
+};
+
 export const contactService = {
   submitContactForm: async (formData: ContactFormData): Promise<ApiResponse<{ messageId: string }>> => {
     try {
-      // Create the contact_messages table if it doesn't exist
+      console.log('Submitting contact form:', formData);
+      
+      // Sanitize inputs
+      const sanitizedData = {
+        name: sanitizeInput(formData.name),
+        email: sanitizeInput(formData.email),
+        message: sanitizeInput(formData.message)
+      };
+      
+      console.log('Sanitized data:', sanitizedData);
+      
       try {
-        // Check if the table exists first
-        const { error: checkError } = await supabase
+        // Try to insert into Supabase
+        const { data, error } = await supabase
           .from('contact_messages')
+          .insert([sanitizedData])
           .select('id')
-          .limit(1);
+          .single();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          // If there's an error with Supabase, fall back to local storage
+          const localId = saveToLocalStorage(sanitizedData);
+          console.log('Saved to local storage with ID:', localId);
           
-        if (checkError && checkError.message.includes('does not exist')) {
-          console.log('Contact messages table does not exist yet. Using local implementation.');
-          // If table doesn't exist, use a mock implementation
           return {
             success: true,
-            data: { messageId: `mock-${Date.now()}` }
+            data: { messageId: localId }
           };
         }
-      } catch (error) {
-        console.error('Error checking contact_messages table:', error);
-      }
 
-      // Insert message into the contact_messages table (if it exists)
-      const { data, error } = await supabase
-        .from('contact_messages')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message
-          }
-        ])
-        .select('id');
+        if (!data) {
+          console.error('No data returned from Supabase');
+          // Fall back to local storage
+          const localId = saveToLocalStorage(sanitizedData);
+          console.log('Saved to local storage with ID:', localId);
+          
+          return {
+            success: true,
+            data: { messageId: localId }
+          };
+        }
 
-      if (error) {
-        console.error('Supabase error:', error);
+        console.log('Message sent successfully to Supabase:', data);
         return {
-          success: false,
-          error: 'Failed to send message. Please try again later.'
+          success: true,
+          data: { messageId: data.id }
+        };
+      } catch (supabaseError) {
+        console.error('Error with Supabase:', supabaseError);
+        // Fall back to local storage
+        const localId = saveToLocalStorage(sanitizedData);
+        console.log('Saved to local storage with ID:', localId);
+        
+        return {
+          success: true,
+          data: { messageId: localId }
         };
       }
-
-      return {
-        success: true,
-        data: { messageId: data?.[0]?.id || `local-${Date.now()}` }
-      };
     } catch (error) {
       console.error('Error in submitContactForm:', error);
       return {

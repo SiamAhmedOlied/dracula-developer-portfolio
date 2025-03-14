@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -41,6 +41,10 @@
 
   * {
     @apply border-border;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 
   html {
@@ -48,7 +52,7 @@
   }
 
   body {
-    @apply bg-dracula-background text-dracula-foreground font-inter;
+    @apply bg-dracula-background text-dracula-foreground font-poppins;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -114,6 +118,13 @@
   }
   .animate-delay-500 {
     animation-delay: 500ms;
+  }
+
+  .allow-select {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
   }
 }
 

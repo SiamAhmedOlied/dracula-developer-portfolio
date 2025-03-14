@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,7 +20,7 @@ export default {
     extend: {
       fontFamily: {
         'space': ['Space Grotesk', 'sans-serif'],
-        'inter': ['Inter', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
         'fira': ['Fira Code', 'monospace'],
       },
       colors: {
