@@ -8,6 +8,7 @@ const validPaths = [
   '/#projects',
   '/#education',
   '/#tools',
+  '/#blog',
   '/#contact',
   '/blog',
   '/blog/'
@@ -36,7 +37,7 @@ export const useUrlFilter = () => {
       // If we're trying to access an anchor that only exists on the home page,
       // redirect to the home page with that anchor
       if (location.hash && ['/blog', '/blog/'].includes(location.pathname)) {
-        const homeAnchors = ['#projects', '#education', '#tools', '#contact'];
+        const homeAnchors = ['#projects', '#education', '#tools', '#blog', '#contact'];
         if (homeAnchors.includes(location.hash)) {
           navigate('/' + location.hash);
           return;
