@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { blogService } from '@/lib/supabase/blog-service';
@@ -6,6 +5,7 @@ import type { Blog } from '@/lib/types';
 import { ArrowLeft, Calendar, Tag, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import DOMPurify from 'dompurify';
 
 const BlogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,6 +50,12 @@ const BlogPage = () => {
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Add this function near the top of the component, after the formatDate function
+  const createMarkup = (content: string) => {
+    const sanitizedContent = DOMPurify.sanitize(content);
+    return { __dangerouslySetInnerHTML: { __html: sanitizedContent } };
   };
 
   return (
@@ -136,11 +142,11 @@ const BlogPage = () => {
                 ))}
               </div>
               
-              <div className="prose prose-invert prose-dracula max-w-none allow-select">
-                {/* Render content as markdown or HTML if needed */}
-                <p className="text-dracula-foreground/90 leading-relaxed whitespace-pre-line">
-                  {blog.content}
-                </p>
+              <div className="prose prose-invert prose-dracula max-w-none">
+                <div 
+                  {...createMarkup(blog.content)}
+                  className="text-dracula-foreground/90 leading-relaxed"
+                />
               </div>
             </article>
           )}
