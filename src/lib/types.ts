@@ -1,4 +1,3 @@
-
 export interface Project {
   id: number;
   title: string;
@@ -42,4 +41,17 @@ export interface Skill {
   name: string;
   category: 'language' | 'framework' | 'tool' | 'soft';
   level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+}
+
+export interface Blog {
+  id: number | string;
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  date: string;
+  image?: string;
+  tags: string[];
+  featured?: boolean;
+  slug?: string;
 }

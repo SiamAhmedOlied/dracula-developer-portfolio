@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { blogService } from '@/lib/supabase/blog-service';
@@ -21,14 +22,8 @@ const BlogPage = () => {
 
       try {
         setLoading(true);
-        const blogId = parseInt(id, 10);
         
-        if (isNaN(blogId)) {
-          navigate('/404');
-          return;
-        }
-        
-        const response = await blogService.getBlogById(blogId);
+        const response = await blogService.getBlogById(id);
         
         if (response.success && response.data) {
           setBlog(response.data);
@@ -135,4 +130,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage; 
+export default BlogPage;

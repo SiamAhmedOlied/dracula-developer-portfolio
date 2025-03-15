@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import BlogSection from '@/components/BlogSection';
@@ -13,4 +14,4 @@ const BlogListPage = () => {
   );
 };
 
-export default BlogListPage; 
+export default BlogListPage;

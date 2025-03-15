@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import type { ApiResponse } from '@/lib/api';
 import type { Blog } from '@/lib/types';
@@ -49,9 +50,10 @@ export const blogService = {
       try {
         // Try to fetch from Supabase
         const { data, error } = await supabase
-          .from('blogs')
+          .from('blog_posts')
           .select('*')
-          .order('date', { ascending: false });
+          .eq('is_published', true)
+          .order('published_at', { ascending: false });
 
         if (error) {
           console.error('Supabase error:', error);
@@ -80,15 +82,14 @@ export const blogService = {
         const blogs: Blog[] = data.map(item => ({
           id: item.id,
           title: item.title,
-          description: item.description,
+          description: item.excerpt || item.title,
           content: item.content,
           author: item.author,
-          date: item.date,
-          image: item.image || undefined,
-          tags: Array.isArray(item.tags) 
-            ? item.tags 
-            : (typeof item.tags === 'string' ? item.tags.split(',') : []),
-          featured: item.featured || false
+          date: item.published_at,
+          image: item.image_url || undefined,
+          tags: Array.isArray(item.tags) ? item.tags : [],
+          featured: false,
+          slug: item.slug
         }));
 
         console.log('Blogs fetched successfully from Supabase:', blogs);
@@ -116,14 +117,14 @@ export const blogService = {
     }
   },
 
-  getBlogById: async (id: number): Promise<ApiResponse<Blog>> => {
+  getBlogById: async (id: string): Promise<ApiResponse<Blog>> => {
     try {
       console.log(`Fetching blog with ID ${id} from Supabase`);
       
       try {
         // Try to fetch from Supabase
         const { data, error } = await supabase
-          .from('blogs')
+          .from('blog_posts')
           .select('*')
           .eq('id', id)
           .single();
@@ -131,7 +132,7 @@ export const blogService = {
         if (error) {
           console.error('Supabase error:', error);
           // If there's an error with Supabase, fall back to local data
-          const localBlog = fallbackBlogs.find(blog => blog.id === id);
+          const localBlog = fallbackBlogs.find(blog => blog.id.toString() === id.toString());
           
           if (!localBlog) {
             return {
@@ -150,7 +151,7 @@ export const blogService = {
         if (!data) {
           console.log('Blog not found in Supabase, checking fallback data');
           // Check if blog exists in fallback data
-          const localBlog = fallbackBlogs.find(blog => blog.id === id);
+          const localBlog = fallbackBlogs.find(blog => blog.id.toString() === id.toString());
           
           if (!localBlog) {
             return {
@@ -169,15 +170,14 @@ export const blogService = {
         const blog: Blog = {
           id: data.id,
           title: data.title,
-          description: data.description,
+          description: data.excerpt || data.title,
           content: data.content,
           author: data.author,
-          date: data.date,
-          image: data.image || undefined,
-          tags: Array.isArray(data.tags) 
-            ? data.tags 
-            : (typeof data.tags === 'string' ? data.tags.split(',') : []),
-          featured: data.featured || false
+          date: data.published_at,
+          image: data.image_url || undefined,
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          featured: data.is_published || false,
+          slug: data.slug
         };
 
         console.log('Blog fetched successfully from Supabase:', blog);
@@ -188,7 +188,7 @@ export const blogService = {
       } catch (supabaseError) {
         console.error('Error with Supabase:', supabaseError);
         // Fall back to local data
-        const localBlog = fallbackBlogs.find(blog => blog.id === id);
+        const localBlog = fallbackBlogs.find(blog => blog.id.toString() === id.toString());
         
         if (!localBlog) {
           return {
@@ -210,5 +210,100 @@ export const blogService = {
         error: 'An unexpected error occurred. Please try again later.'
       };
     }
+  },
+  
+  getBlogBySlug: async (slug: string): Promise<ApiResponse<Blog>> => {
+    try {
+      console.log(`Fetching blog with slug ${slug} from Supabase`);
+      
+      try {
+        // Try to fetch from Supabase
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('slug', slug)
+          .single();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          // If there's an error with Supabase, fall back to local data
+          const localBlog = fallbackBlogs.find(blog => blog.slug === slug);
+          
+          if (!localBlog) {
+            return {
+              success: false,
+              error: 'Blog not found'
+            };
+          }
+          
+          console.log('Using local blog data as fallback');
+          return {
+            success: true,
+            data: localBlog
+          };
+        }
+
+        if (!data) {
+          console.log('Blog not found in Supabase, checking fallback data');
+          // Check if blog exists in fallback data
+          const localBlog = fallbackBlogs.find(blog => blog.slug === slug);
+          
+          if (!localBlog) {
+            return {
+              success: false,
+              error: 'Blog not found'
+            };
+          }
+          
+          return {
+            success: true,
+            data: localBlog
+          };
+        }
+
+        // Transform the data to match the Blog type
+        const blog: Blog = {
+          id: data.id,
+          title: data.title,
+          description: data.excerpt || data.title,
+          content: data.content,
+          author: data.author,
+          date: data.published_at,
+          image: data.image_url || undefined,
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          featured: data.is_published || false,
+          slug: data.slug
+        };
+
+        console.log('Blog fetched successfully from Supabase:', blog);
+        return {
+          success: true,
+          data: blog
+        };
+      } catch (supabaseError) {
+        console.error('Error with Supabase:', supabaseError);
+        // Fall back to local data
+        const localBlog = fallbackBlogs.find(blog => blog.slug === slug);
+        
+        if (!localBlog) {
+          return {
+            success: false,
+            error: 'Blog not found'
+          };
+        }
+        
+        console.log('Using local blog data as fallback due to error');
+        return {
+          success: true,
+          data: localBlog
+        };
+      }
+    } catch (error) {
+      console.error('Error in getBlogBySlug:', error);
+      return {
+        success: false,
+        error: 'An unexpected error occurred. Please try again later.'
+      };
+    }
   }
-}; 
+};

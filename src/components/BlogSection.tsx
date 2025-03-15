@@ -1,8 +1,8 @@
+
 import React, { useEffect, useState } from 'react';
-import { fallbackBlogs } from '@/lib/data';
-import { ExternalLink, Calendar, Tag, Star } from 'lucide-react';
 import { blogService } from '@/lib/supabase/blog-service';
 import type { Blog } from '@/lib/types';
+import { ExternalLink, Calendar, Tag, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BlogSection = () => {
@@ -118,4 +118,4 @@ const BlogSection = () => {
   );
 };
 
-export default BlogSection; 
+export default BlogSection;

@@ -9,63 +9,107 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      contact_messages: {
+      blog_posts: {
         Row: {
+          author: string
+          content: string
+          excerpt: string | null
           id: string
-          name: string
-          email: string
-          message: string
-          created_at: string
+          image_url: string | null
+          is_published: boolean | null
+          published_at: string
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string
         }
         Insert: {
+          author: string
+          content: string
+          excerpt?: string | null
           id?: string
-          name: string
-          email: string
-          message: string
-          created_at?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          published_at?: string
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
         }
         Update: {
+          author?: string
+          content?: string
+          excerpt?: string | null
           id?: string
-          name?: string
-          email?: string
-          message?: string
-          created_at?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          published_at?: string
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
         }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+        }
+        Relationships: []
       }
       projects: {
         Row: {
-          id: number
-          title: string
-          description: string
-          technologies: string[] | string
-          featured: boolean
-          github_url: string | null
-          demo_url: string | null
-          role: string | null
           created_at: string
+          description: string
+          github_url: string | null
+          id: string
+          image_url: string | null
+          live_url: string | null
+          technologies: string[]
+          title: string
+          updated_at: string
         }
         Insert: {
-          id?: number
-          title: string
-          description: string
-          technologies: string[] | string
-          featured?: boolean
-          github_url?: string | null
-          demo_url?: string | null
-          role?: string | null
           created_at?: string
+          description: string
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          live_url?: string | null
+          technologies: string[]
+          title: string
+          updated_at?: string
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string
-          technologies?: string[] | string
-          featured?: boolean
-          github_url?: string | null
-          demo_url?: string | null
-          role?: string | null
           created_at?: string
+          description?: string
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          live_url?: string | null
+          technologies?: string[]
+          title?: string
+          updated_at?: string
         }
+        Relationships: []
       }
     }
     Views: {
