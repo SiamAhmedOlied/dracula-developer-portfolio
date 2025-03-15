@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import type { ApiResponse } from '@/lib/api';
 import type { Project } from '@/lib/types';
@@ -48,13 +49,11 @@ export const projectService = {
           id: item.id,
           title: item.title,
           description: item.description,
-          technologies: Array.isArray(item.technologies) 
-            ? item.technologies 
-            : (typeof item.technologies === 'string' ? item.technologies.split(',') : []),
-          featured: item.featured || false,
+          technologies: item.technologies, // This is already an array in Supabase
+          featured: false, // Default value since it's not in the database
           githubUrl: item.github_url || null,
-          demoUrl: item.demo_url || null,
-          role: item.role || null
+          demoUrl: item.live_url || null, // Map live_url to demoUrl
+          role: null // Default value since it's not in the database
         }));
 
         console.log('Projects fetched successfully from Supabase:', projects);
