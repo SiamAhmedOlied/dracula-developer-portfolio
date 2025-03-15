@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const navLinks = [
   { name: 'Projects', href: '#projects' },
@@ -16,6 +16,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,6 +56,16 @@ const Navbar = () => {
     return window.location.pathname === href;
   };
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      // If we're not on the home page and trying to navigate to an anchor
+      if (location.pathname !== '/') {
+        e.preventDefault();
+        navigate('/' + href);
+      }
+    }
+  };
+
   return (
     <header
       className={cn(
@@ -79,6 +91,7 @@ const Navbar = () => {
                   'nav-link',
                   isActiveLink(link.href) && 'active-nav-link'
                 )}
+                onClick={(e) => handleNavClick(e, link.href)}
               >
                 {link.name}
               </a>
@@ -117,7 +130,10 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   className="text-dracula-foreground hover:text-dracula-cyan text-2xl transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    handleNavClick(e, link.href);
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   {link.name}
                 </a>
