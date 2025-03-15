@@ -115,14 +115,7 @@ const BlogSection = () => {
               ))}
             </div>
             
-            <div className="mt-8 text-center">
-              <Link 
-                to="/blog" 
-                className="inline-block px-4 py-2 bg-dracula-purple/20 hover:bg-dracula-purple/40 text-dracula-purple rounded transition-colors"
-              >
-                View All Posts
-              </Link>
-            </div>
+            {/* Removed the "View All Posts" button as requested */}
           </>
         )}
       </div>

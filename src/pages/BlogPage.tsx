@@ -5,6 +5,7 @@ import { blogService } from '@/lib/supabase/blog-service';
 import type { Blog } from '@/lib/types';
 import { ArrowLeft, Calendar, Tag, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 const BlogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,7 +58,7 @@ const BlogPage = () => {
       <div className="min-h-screen bg-dracula-background text-dracula-foreground pt-24 pb-12 px-4 md:px-8">
         <div className="max-w-4xl mx-auto">
           <Link 
-            to="/blog" 
+            to="/#blog" 
             className="inline-flex items-center text-dracula-cyan hover:text-dracula-green mb-6 transition-colors"
           >
             <ArrowLeft size={16} className="mr-2" />
@@ -83,10 +84,24 @@ const BlogPage = () => {
               </h1>
               
               <div className="flex flex-wrap gap-4 mb-6 text-sm text-dracula-foreground/70">
-                <div className="flex items-center">
-                  <User size={14} className="mr-1" />
-                  <span>{blog.author}</span>
-                </div>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <div className="flex items-center cursor-pointer">
+                      <User size={14} className="mr-1" />
+                      <span>{blog.author}</span>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-60 bg-dracula-background border border-dracula-currentLine">
+                    <div className="flex flex-col space-y-2">
+                      <p className="text-sm text-dracula-foreground">
+                        Author: <span className="font-bold">{blog.author}</span>
+                      </p>
+                      <p className="text-xs text-dracula-foreground/70">
+                        Expert in cybersecurity and software development.
+                      </p>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
                 
                 <div className="flex items-center">
                   <Calendar size={14} className="mr-1" />
@@ -95,12 +110,17 @@ const BlogPage = () => {
               </div>
               
               {blog.image && (
-                <div className="mb-6">
+                <div className="mb-6 group relative overflow-hidden rounded-lg">
                   <img 
                     src={blog.image} 
                     alt={blog.title} 
-                    className="w-full h-auto rounded-lg object-cover"
+                    className="w-full h-auto object-cover rounded-lg transform transition-transform duration-500 hover:scale-105" 
                   />
+                  <div className="absolute inset-0 bg-dracula-background/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-dracula-background/80 p-2 rounded">
+                      <span className="text-dracula-cyan font-medium text-sm">Featured Image</span>
+                    </div>
+                  </div>
                 </div>
               )}
               
@@ -108,7 +128,7 @@ const BlogPage = () => {
                 {blog.tags.map((tag, i) => (
                   <span 
                     key={i} 
-                    className="text-xs px-2 py-1 rounded-full bg-dracula-currentLine text-dracula-cyan flex items-center"
+                    className="text-xs px-2 py-1 rounded-full bg-dracula-currentLine text-dracula-cyan flex items-center hover:bg-dracula-cyan/20 transition-colors"
                   >
                     <Tag size={10} className="mr-1" />
                     {tag}
@@ -116,7 +136,7 @@ const BlogPage = () => {
                 ))}
               </div>
               
-              <div className="prose prose-invert prose-dracula max-w-none">
+              <div className="prose prose-invert prose-dracula max-w-none allow-select">
                 {/* Render content as markdown or HTML if needed */}
                 <p className="text-dracula-foreground/90 leading-relaxed whitespace-pre-line">
                   {blog.content}
