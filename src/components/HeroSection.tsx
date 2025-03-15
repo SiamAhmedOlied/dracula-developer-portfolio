@@ -15,11 +15,11 @@ const HeroSection = () => {
         'Frontend Developer & Cybersecurity Professional',
         '',
         '$ cat about.txt',
-        'Building secure systems with precision.',
-        'Specializing in web development and cybersecurity.',
+        'precisely securing the systems of various companies',
+        'Specialized in Web Development, CyberSecurity and Malware Analysis.',
         '',
         '$ ls skills/',
-        'python   javascript   react   penetration-testing   network-security'
+        'python   golang   penetration-testing   network-security   malware-development'
       ];
       
       const terminal = terminalRef.current;
@@ -61,13 +61,13 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex flex-col justify-center items-center pt-20 section-padding relative overflow-hidden">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6 md:order-1 order-2">
-          <div className="space-y-4 opacity-0 animate-fade-in-up animate-delay-100">
+          <div className="space-y-6 opacity-0 animate-fade-in-up animate-delay-100">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-              <span className="text-gradient">Developer &</span><br />
-              <span className="text-gradient">Security Specialist</span>
+              <span className="text-gradient">Web Developer &</span><br />
+              <span className="text-gradient">CyberSecurity Professional</span>
             </h1>
-            <p className="text-xl md:text-2xl text-dracula-foreground/80 italic">
-              Building secure systems with precision.
+            <p className="text-xl md:text-xl text-dracula-foreground/80">
+              Ignite the Digital Void
             </p>
           </div>
           
@@ -91,7 +91,7 @@ const HeroSection = () => {
               <Linkedin size={20} />
             </a>
             <a 
-              href="/resume.pdf" 
+              href="resume.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
               className="p-3 rounded-full bg-dracula-currentLine/50 hover:bg-dracula-currentLine transition-colors text-dracula-foreground hover:text-dracula-cyan"
