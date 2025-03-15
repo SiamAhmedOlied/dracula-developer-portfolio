@@ -51,6 +51,36 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: string
+          issuer: string
+          name: string
+          updated_at: string | null
+          url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id?: string
+          issuer: string
+          name: string
+          updated_at?: string | null
+          url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: string
+          issuer?: string
+          name?: string
+          updated_at?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -72,6 +102,42 @@ export type Database = {
           id?: string
           message?: string
           name?: string
+        }
+        Relationships: []
+      }
+      education: {
+        Row: {
+          created_at: string | null
+          degree: string
+          description: string | null
+          end_date: string
+          id: string
+          institution: string
+          location: string
+          start_date: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          degree: string
+          description?: string | null
+          end_date: string
+          id?: string
+          institution: string
+          location: string
+          start_date: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          degree?: string
+          description?: string | null
+          end_date?: string
+          id?: string
+          institution?: string
+          location?: string
+          start_date?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -108,6 +174,33 @@ export type Database = {
           technologies?: string[]
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          category: string
+          created_at: string | null
+          id: string
+          level: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          id?: string
+          level: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          id?: string
+          level?: string
+          name?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
