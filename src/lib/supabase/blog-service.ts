@@ -13,8 +13,7 @@ const fallbackBlogs: Blog[] = [
     author: "Siam Ahmed Olied",
     date: "2023-12-15",
     tags: ["React", "JavaScript", "Frontend"],
-    featured: true,
-    slug: "getting-started-with-react" // Add slug to fallback data
+    featured: true
   },
   {
     id: 2,
@@ -24,8 +23,7 @@ const fallbackBlogs: Blog[] = [
     author: "Siam Ahmed Olied",
     date: "2024-01-20",
     tags: ["TypeScript", "JavaScript", "Development"],
-    featured: false,
-    slug: "understanding-typescript" // Add slug to fallback data
+    featured: false
   },
   {
     id: 3,
@@ -35,14 +33,12 @@ const fallbackBlogs: Blog[] = [
     author: "Siam Ahmed Olied",
     date: "2024-02-10",
     tags: ["Supabase", "Firebase", "Backend"],
-    featured: true,
-    slug: "supabase-vs-firebase" // Add slug to fallback data
+    featured: true
   }
 ];
 
 // Fallback to local data when Supabase is not available
 const getLocalBlogs = (): Blog[] => {
-  console.log('Using local blogs data');
   return fallbackBlogs;
 };
 
@@ -53,20 +49,17 @@ export const blogService = {
       
       try {
         // Try to fetch from Supabase
-        console.log('Attempting Supabase query');
         const { data, error } = await supabase
           .from('blog_posts')
           .select('*')
           .eq('is_published', true)
           .order('published_at', { ascending: false });
 
-        console.log('Supabase query result:', { data, error });
-
         if (error) {
           console.error('Supabase error:', error);
           // If there's an error with Supabase, fall back to local data
           const localBlogs = getLocalBlogs();
-          console.log('Using local blogs data as fallback due to error');
+          console.log('Using local blogs data as fallback');
           
           return {
             success: true,
@@ -86,18 +79,17 @@ export const blogService = {
         }
 
         // Transform the data to match the Blog type
-        console.log('Transforming Supabase data to Blog type');
         const blogs: Blog[] = data.map(item => ({
           id: item.id,
-          title: item.title || 'Untitled',
-          description: item.excerpt || item.title || 'No description',
-          content: item.content || '',
-          author: item.author || 'Unknown Author',
-          date: item.published_at || new Date().toISOString(),
+          title: item.title,
+          description: item.excerpt || item.title,
+          content: item.content,
+          author: item.author,
+          date: item.published_at,
           image: item.image_url || undefined,
           tags: Array.isArray(item.tags) ? item.tags : [],
-          featured: Boolean(item.is_published),
-          slug: item.slug || `post-${item.id}`
+          featured: false,
+          slug: item.slug
         }));
 
         console.log('Blogs fetched successfully from Supabase:', blogs);
@@ -177,15 +169,15 @@ export const blogService = {
         // Transform the data to match the Blog type
         const blog: Blog = {
           id: data.id,
-          title: data.title || 'Untitled',
-          description: data.excerpt || data.title || 'No description',
-          content: data.content || '',
-          author: data.author || 'Unknown Author',
-          date: data.published_at || new Date().toISOString(),
+          title: data.title,
+          description: data.excerpt || data.title,
+          content: data.content,
+          author: data.author,
+          date: data.published_at,
           image: data.image_url || undefined,
           tags: Array.isArray(data.tags) ? data.tags : [],
-          featured: Boolean(data.is_published),
-          slug: data.slug || `post-${data.id}`
+          featured: data.is_published || false,
+          slug: data.slug
         };
 
         console.log('Blog fetched successfully from Supabase:', blog);
@@ -232,8 +224,6 @@ export const blogService = {
           .eq('slug', slug)
           .single();
 
-        console.log('Supabase getBlogBySlug result:', { data, error });
-
         if (error) {
           console.error('Supabase error:', error);
           // If there's an error with Supabase, fall back to local data
@@ -274,15 +264,15 @@ export const blogService = {
         // Transform the data to match the Blog type
         const blog: Blog = {
           id: data.id,
-          title: data.title || 'Untitled',
-          description: data.excerpt || data.title || 'No description',
-          content: data.content || '',
-          author: data.author || 'Unknown Author',
-          date: data.published_at || new Date().toISOString(),
+          title: data.title,
+          description: data.excerpt || data.title,
+          content: data.content,
+          author: data.author,
+          date: data.published_at,
           image: data.image_url || undefined,
           tags: Array.isArray(data.tags) ? data.tags : [],
-          featured: Boolean(data.is_published),
-          slug: data.slug || `post-${data.id}`
+          featured: data.is_published || false,
+          slug: data.slug
         };
 
         console.log('Blog fetched successfully from Supabase:', blog);
