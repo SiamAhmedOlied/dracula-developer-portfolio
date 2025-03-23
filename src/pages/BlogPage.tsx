@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { blogService } from '@/lib/supabase/blog-service';
 import type { Blog } from '@/lib/types';
-import { ArrowLeft, Calendar, Tag, User, ArrowRight, MessageSquare, Share, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Calendar, Tag, User, ArrowRight, Share, ExternalLink } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,7 @@ import DOMPurify from 'dompurify';
 import { useToast } from '@/components/ui/use-toast';
 
 const BlogPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<Blog[]>([]);
@@ -22,7 +21,7 @@ const BlogPage = () => {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      if (!id) {
+      if (!slug) {
         navigate('/404');
         return;
       }
@@ -30,7 +29,7 @@ const BlogPage = () => {
       try {
         setLoading(true);
         
-        const response = await blogService.getBlogById(id);
+        const response = await blogService.getBlogBySlug(slug);
         
         if (response.success && response.data) {
           setBlog(response.data);
@@ -42,7 +41,7 @@ const BlogPage = () => {
             
             // Filter out the current blog and find ones with similar tags
             const related = allBlogs
-              .filter(b => b.id !== id)
+              .filter(b => b.id !== response.data.id)
               .filter(b => b.tags.some(tag => response.data.tags.includes(tag)))
               .sort((a, b) => {
                 // Sort by the number of matching tags
@@ -83,7 +82,7 @@ const BlogPage = () => {
     
     // Scroll to top when component mounts
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, navigate, toast]);
+  }, [slug, navigate, toast]);
 
   // Format date to a more readable format
   const formatDate = (dateString: string) => {
@@ -97,21 +96,44 @@ const BlogPage = () => {
     return { __html: sanitizedContent };
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
     if (navigator.share) {
-      navigator.share({
-        title: blog?.title || 'Blog post',
-        text: blog?.description || 'Check out this blog post',
-        url: window.location.href,
-      })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error));
+      try {
+        await navigator.share({
+          title: blog?.title || 'Blog post',
+          text: blog?.description || 'Check out this blog post',
+          url: window.location.href,
+        });
+        toast({
+          title: "Shared!",
+          description: "Blog post has been shared successfully",
+        });
+      } catch (error) {
+        console.log('Error sharing', error);
+        // User might have cancelled the share operation
+        if (error instanceof Error && error.name !== 'AbortError') {
+          toast({
+            title: "Sharing failed",
+            description: "Could not share the blog post",
+            variant: "destructive"
+          });
+        }
+      }
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "Link copied!",
-        description: "Blog post link copied to clipboard",
-      });
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        toast({
+          title: "Link copied!",
+          description: "Blog post link copied to clipboard",
+        });
+      } catch (error) {
+        console.error('Failed to copy link', error);
+        toast({
+          title: "Copy failed",
+          description: "Could not copy the link to clipboard",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -249,7 +271,7 @@ const BlogPage = () => {
                     {relatedPosts.map((post) => (
                       <Link 
                         key={post.id}
-                        to={`/blog/${post.id}`}
+                        to={`/blog/${post.slug || post.id}`}
                         className="glass-card p-4 rounded-lg hover:border-dracula-cyan/50 transition-colors group"
                       >
                         {post.image && (
