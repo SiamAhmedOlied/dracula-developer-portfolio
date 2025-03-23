@@ -9,6 +9,7 @@ const validPaths = [
   '/#education',
   '/#tools',
   '/#contact',
+  '/#blog',
   '/blog',
   '/blog/'
 ];
