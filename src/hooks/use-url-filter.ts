@@ -8,7 +8,9 @@ const validPaths = [
   '/#projects',
   '/#education',
   '/#tools',
-  '/#contact'
+  '/#contact',
+  '/blog',
+  '/blog/'
 ];
 
 export const useUrlFilter = () => {
@@ -20,13 +22,18 @@ export const useUrlFilter = () => {
     
     // Check if the current path is valid
     if (!validPaths.includes(currentPath)) {
+      // If we're on a blog detail page, it's valid
+      if (location.pathname.startsWith('/blog/') && location.pathname.length > 6) {
+        return;
+      }
+      
       // If we're on a valid base path but with an anchor, it's okay
       // This allows navigation to anchors from other pages
       if (location.hash && validPaths.includes(location.pathname)) {
         return;
       }
       
-      // Redirect to 404 page
+      // Redirect to a 404 page
       navigate('/404');
     }
   }, [location, navigate]);

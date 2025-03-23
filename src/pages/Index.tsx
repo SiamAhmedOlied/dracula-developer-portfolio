@@ -6,6 +6,7 @@ import ProjectsSection from '@/components/ProjectsSection';
 import EducationSection from '@/components/EducationSection';
 import ToolsSection from '@/components/ToolsSection';
 import ContactSection from '@/components/ContactSection';
+import BlogSection from '@/components/BlogSection';
 import { ArrowUp, Download } from 'lucide-react';
 
 const Index = () => {
@@ -40,6 +41,7 @@ const Index = () => {
         <ProjectsSection />
         <EducationSection />
         <ToolsSection />
+        <BlogSection />
         <ContactSection />
       </main>
       

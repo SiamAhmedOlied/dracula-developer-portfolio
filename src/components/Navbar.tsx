@@ -8,6 +8,7 @@ const navLinks = [
   { name: 'Projects', href: '#projects' },
   { name: 'Education', href: '#education' },
   { name: 'Tools', href: '#tools' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -51,6 +52,9 @@ const Navbar = () => {
   const isActiveLink = (href: string) => {
     if (href.startsWith('#')) {
       return activeSection === href.substring(1);
+    }
+    if (href === '/blog') {
+      return location.pathname === '/blog' || location.pathname.startsWith('/blog/');
     }
     return window.location.pathname === href;
   };
