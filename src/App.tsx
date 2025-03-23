@@ -10,7 +10,14 @@ import BlogPage from "./pages/BlogPage";
 import BlogListPage from "./pages/BlogListPage";
 import { useUrlFilter } from "./hooks/use-url-filter";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1, // Limit retries to avoid excessive requests
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 const AppContent = () => {
   useUrlFilter();

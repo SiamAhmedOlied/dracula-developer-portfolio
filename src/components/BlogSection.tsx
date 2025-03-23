@@ -18,16 +18,20 @@ const BlogSection = () => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
+        console.log('BlogSection: Fetching blogs');
         const response = await blogService.getBlogs();
+        console.log('BlogSection: Blogs response', response);
         
         if (response.success && response.data) {
+          console.log('BlogSection: Success, processing blogs');
           // Get only the 3 most recent blogs for the homepage
           const sortedBlogs = [...response.data]
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
             .slice(0, 3);
           setBlogs(sortedBlogs);
+          console.log('BlogSection: Sorted blogs', sortedBlogs);
         } else {
-          console.error('Failed to fetch blogs:', response.error);
+          console.error('BlogSection: Failed to fetch blogs:', response.error);
           setError('Failed to load blogs');
           toast({
             title: "Error",
@@ -36,7 +40,7 @@ const BlogSection = () => {
           });
         }
       } catch (err) {
-        console.error('Error fetching blogs:', err);
+        console.error('BlogSection: Error fetching blogs:', err);
         setError('An error occurred while loading blogs');
         toast({
           title: "Error",
@@ -149,7 +153,7 @@ const BlogSection = () => {
                     
                     <div className="flex justify-end">
                       <Link 
-                        to={`/blog/${blog.id}`}
+                        to={`/blog/${blog.slug || blog.id}`}
                         className="text-sm px-3 py-1 bg-dracula-purple/20 hover:bg-dracula-purple/40 text-dracula-purple rounded transition-colors flex items-center"
                       >
                         Read More
