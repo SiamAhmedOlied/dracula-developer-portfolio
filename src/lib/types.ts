@@ -12,7 +12,7 @@ export interface Project {
 }
 
 export interface Education {
-  id: number;
+  id: number | string;
   degree: string;
   institution: string;
   location: string;
@@ -22,7 +22,7 @@ export interface Education {
 }
 
 export interface Certificate {
-  id: number;
+  id: number | string;
   name: string;
   issuer: string;
   date: string;
@@ -38,7 +38,7 @@ export interface Tool {
 }
 
 export interface Skill {
-  id: number;
+  id: number | string;
   name: string;
   category: 'language' | 'framework' | 'tool' | 'soft';
   level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
